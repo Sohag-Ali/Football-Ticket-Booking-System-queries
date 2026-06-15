@@ -83,7 +83,7 @@ INSERT INTO Bookings VALUES
 
 SELECT match_id,
        fixture,
-       round(base_ticket_price)
+       round(base_ticket_price) as base_ticket_price
 FROM Matches
 WHERE tournament_category = 'Champions League'
 AND match_status = 'Available';
@@ -117,7 +117,7 @@ SELECT
     b.booking_id,
     u.full_name,
     m.fixture,
-    round(b.total_cost)
+    round(b.total_cost) as total_cost
 FROM Bookings b
 INNER JOIN Users u
 ON b.user_id = u.user_id
@@ -138,10 +138,11 @@ ON u.user_id = b.user_id;
 
 -- Query 6
 
+
 SELECT
     booking_id,
     match_id,
-    round(total_cost)
+    round(total_cost) as total_cost
 FROM Bookings
 WHERE total_cost >
 (
@@ -155,7 +156,7 @@ WHERE total_cost >
 SELECT
     match_id,
     fixture,
-    round(base_ticket_price)
+    round(base_ticket_price) as base_ticket_price
 FROM Matches
 ORDER BY base_ticket_price DESC
 LIMIT 2 OFFSET 1;
