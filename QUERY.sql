@@ -29,7 +29,7 @@ CREATE TABLE Matches (
 match_id INT PRIMARY KEY,
 fixture VARCHAR(150),
 tournament_category VARCHAR(100),
-base_ticket_price INT,
+base_ticket_price DECIMAL(10,2),
 match_status VARCHAR(50)
 );
 
@@ -41,7 +41,7 @@ user_id INT,
 match_id INT,
 seat_number VARCHAR(20),
 payment_status VARCHAR(50),
-total_cost INT,
+total_cost DECIMAL(10,2),
 
 FOREIGN KEY (user_id)
 REFERENCES Users(user_id),
@@ -50,6 +50,7 @@ FOREIGN KEY (match_id)
 REFERENCES Matches(match_id)
 
 );
+
 
 
 
@@ -62,19 +63,19 @@ INSERT INTO Users VALUES
 
 -- matches table data inseret
 INSERT INTO Matches VALUES
-(101,'Real Madrid vs Barcelona','Champions League',150,'Available'),
-(102,'Man City vs Liverpool','Premier League',120,'Selling Fast'),
-(103,'Bayern Munich vs PSG','Champions League',130,'Available'),
-(104,'AC Milan vs Inter Milan','Serie A',90,'Sold Out'),
-(105,'Juventus vs Roma','Serie A',80,'Available');
+(101, 'Real Madrid vs Barcelona', 'Champions League', 150.00, 'Available'),
+(102, 'Man City vs Liverpool', 'Premier League', 120.00, 'Selling Fast'),
+(103, 'Bayern Munich vs PSG', 'Champions League', 130.00, 'Available'),
+(104, 'AC Milan vs Inter Milan', 'Serie A', 90.00, 'Sold Out'),
+(105, 'Juventus vs Roma', 'Serie A', 80.00, 'Available');
 
 -- booking table data insert
 INSERT INTO Bookings VALUES
-(501,1,101,'A-12','Confirmed',150),
-(502,1,102,'B-04','Confirmed',120),
-(503,2,101,'A-13','Confirmed',150),
-(504,2,101,NULL,NULL,150),
-(505,3,102,'C-20','Pending',120);
+(501, 1, 101, 'A-12', 'Confirmed', 150.00),
+(502, 1, 102, 'B-04', 'Confirmed', 120.00),
+(503, 2, 101, 'A-13', 'Confirmed', 150.00),
+(504, 2, 101, NULL, NULL, 150.00),
+(505, 3, 102, 'C-20', 'Pending', 120.00);
 
 
 
@@ -82,7 +83,7 @@ INSERT INTO Bookings VALUES
 
 SELECT match_id,
        fixture,
-       base_ticket_price
+       round(base_ticket_price)
 FROM Matches
 WHERE tournament_category = 'Champions League'
 AND match_status = 'Available';
@@ -116,7 +117,7 @@ SELECT
     b.booking_id,
     u.full_name,
     m.fixture,
-    b.total_cost
+    round(b.total_cost)
 FROM Bookings b
 INNER JOIN Users u
 ON b.user_id = u.user_id
@@ -140,7 +141,7 @@ ON u.user_id = b.user_id;
 SELECT
     booking_id,
     match_id,
-    total_cost
+    round(total_cost)
 FROM Bookings
 WHERE total_cost >
 (
@@ -154,7 +155,7 @@ WHERE total_cost >
 SELECT
     match_id,
     fixture,
-    base_ticket_price
+    round(base_ticket_price)
 FROM Matches
 ORDER BY base_ticket_price DESC
 LIMIT 2 OFFSET 1;
